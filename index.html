@@ -1,0 +1,238 @@
+<html>
+  <head>
+
+    <title>Chatiment</title>
+  <!-- You can use Open Graph tags to customize link previews.
+  Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url"           content="https://www.your-domain.com/your-page.html" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Your Website Title" />
+    <meta property="og:description"   content="Your description" />
+    <meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">
+    </script>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    </script>
+
+<!--
+    <script src="https://code.highcharts.com/highcharts.js">
+    </script>
+-->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+
+
+    <script src="https://code.highcharts.com/modules/annotations.js">
+    </script>
+
+    <link rel= "stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="js/chartBase.js"></script>
+    <script src="js/chart_config.js"></script>
+    <script src="js/lity/lity.min.js"> </script>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="js/lity/lity.min.css">
+
+
+  </head>
+
+  <body>
+
+    <div class="top-title">
+      <div class="row">
+        <div class = "col-md-6">
+          <h4>
+            <i class="fas fa-chalkboard-teacher"></i>
+            CHATIMENT
+          </h4>
+        </div>
+        <div class="col-md-6">
+          <div class = "linkbar">
+             <a class="linkbar_link" id = "about_link" href="about.html" data-lity> About </a>
+             <a class="linkbar_link" href="about.html#exports" data-lity> Exporting Chats </a>
+             <a class="linkbar_link" href="mailto:hello.chatiment@gmail.com">hello.chatiment@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-container"> <!-- Container -->
+     <div class="row">
+       <div class = "col-sm-4 selector">
+         <h6>1. Select Client Type</h6>
+         <select id="parser">
+           <option selected disabled> Select Client</option>
+           <option value="telegram"> Telegram </option>
+           <option value="whatsapp"> WhatsApp </option>
+           <option value="kakao"> Kakao </option>
+           <option value="discord" disabled> Discord </option>
+           <option value="slack" disabled> Slack </option>
+         </select>
+       </div>
+
+       <div class="col-sm-4 selector">
+         <h6>2. Upload File </h6>
+         <div id="upload" style="display: none">
+           <input type="file"  accept=".csv,.txt,.json" name="files[]" size=30 >
+           <img class="loader_gif" src="img/dot_loader.gif" style="height: 30px; display: none"/>
+         </div>
+       </div>
+
+
+
+
+       <div class="col-sm-4 selector" style="font-size: 10px">
+           <h6>3. Share </h6>
+           <div class="row share-container">
+             <!-- Sharingbutton Facebook -->
+             <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.chatiment.io" target="_blank" rel="noopener" aria-label="">
+               <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
+                 </div>
+               </div>
+             </a>
+
+             <!-- Sharingbutton Twitter -->
+             <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?text=https%3A%2F%2Fwww.chatiment.io%20%20Backtest%20your%20Trading%20Group%20with%20%23chatiment!&amp;url=https%3A%2F%2Fwww.chatiment.io%20" target="_blank" rel="noopener" aria-label="">
+               <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/></svg>
+                 </div>
+               </div>
+             </a>
+
+             <!-- Sharingbutton E-Mail -->
+             <a class="resp-sharing-button__link" href="mailto:?subject=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;body=https%3A%2F%2Fwww.chatiment.io" target="_self" rel="noopener" aria-label="">
+               <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7.25 14.43l-3.5 2c-.08.05-.17.07-.25.07-.17 0-.34-.1-.43-.25-.14-.24-.06-.55.18-.68l3.5-2c.24-.14.55-.06.68.18.14.24.06.55-.18.68zm4.75.07c-.1 0-.2-.03-.27-.08l-8.5-5.5c-.23-.15-.3-.46-.15-.7.15-.22.46-.3.7-.14L12 13.4l8.23-5.32c.23-.15.54-.08.7.15.14.23.07.54-.16.7l-8.5 5.5c-.08.04-.17.07-.27.07zm8.93 1.75c-.1.16-.26.25-.43.25-.08 0-.17-.02-.25-.07l-3.5-2c-.24-.13-.32-.44-.18-.68s.44-.32.68-.18l3.5 2c.24.13.32.44.18.68z"/></svg>
+                 </div>
+               </div>
+             </a>
+
+             <!-- Sharingbutton LinkedIn -->
+             <a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.chatiment.io&amp;title=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;summary=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;source=https%3A%2F%2Fwww.chatiment.io" target="_blank" rel="noopener" aria-label="">
+               <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z"/></svg>
+                 </div>
+               </div>
+             </a>
+
+             <!-- Sharingbutton Reddit -->
+             <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3A%2F%2Fwww.chatiment.io&amp;resubmit=true&amp;title=Backtest%20your%20Trading%20Group%20with%20Chatiment!" target="_blank" rel="noopener" aria-label="">
+               <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 13.37C1.5 13.07 1 12.35 1 11.5c0-1.1.9-2 2-2 .64 0 1.22.32 1.6.82-1.1.85-1.92 1.9-2.3 3.05zm3.7.13c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9.8 4.8c-1.08.63-2.42.96-3.8.96-1.4 0-2.74-.34-3.8-.95-.24-.13-.32-.44-.2-.68.15-.24.46-.32.7-.18 1.83 1.06 4.76 1.06 6.6 0 .23-.13.53-.05.67.2.14.23.06.54-.18.67zm.2-2.8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5.7-2.13c-.38-1.16-1.2-2.2-2.3-3.05.38-.5.97-.82 1.6-.82 1.1 0 2 .9 2 2 0 .84-.53 1.57-1.3 1.87z"/></svg>
+                 </div>
+               </div>
+             </a>
+
+           </div>
+       </div>
+     </div>
+
+      <div id="chart-sent-section" class="row chart_hist_container">
+        <div class="col-md-9  chart_container" >
+          <div class="placeholder_chart">
+            <img src="img/charty.png" style="height: 150px;">
+            <p>Upload an Export file from Telegram/Kakao/WhatsApp/etc. to begin</p>
+          </div>
+          <div  id="annotated_chart">
+          </div>
+        </div>
+        <div class = "col-md-3" >
+          <div class = "sent_sec">
+            <div class="text-header">
+               <h6> <i class="fa fa-book"></i> CHAT HISTORY </h6>
+            </div>
+            <div class = "chat_hist" style="">
+            </div>
+          </div>
+        </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <footer class="footer" style = "">
+      <div class = "row">
+        <div class="col-md-6">
+          DONATE BTC: <a class="donate-link" href="https://www.blockchain.com/btc/address/1PVoA8rsu35jUvbw8522i6jc4SPn5Phvsk" data-lity> 1PVoA8rsu35jUvbw8522i6jc4SPn5Phvsk </a> <br/>
+          DONATE ETH || TOKENS: <a class="donate-link" href="https://etherscan.io/address/0xcf27bafab139187c34fba766c9ddefaac0ae9132" data-lity> 0xcf27bafab139187c34fba766c9ddefaac0ae9132 </a> <br/><br/>
+          Chatiment is powered by Avocado & Nomics <br/>
+        </div>
+
+        <div class="col-md-6 social-footer">
+          <!-- Sharingbutton Facebook -->
+          <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.chatiment.io" target="_blank" rel="noopener" aria-label="">
+            <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Sharingbutton Twitter -->
+          <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?text=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;url=https%3A%2F%2Fwww.chatiment.io" target="_blank" rel="noopener" aria-label="">
+            <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Sharingbutton E-Mail -->
+          <a class="resp-sharing-button__link" href="mailto:?subject=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;body=https%3A%2F%2Fwww.chatiment.io" target="_self" rel="noopener" aria-label="">
+            <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7.25 14.43l-3.5 2c-.08.05-.17.07-.25.07-.17 0-.34-.1-.43-.25-.14-.24-.06-.55.18-.68l3.5-2c.24-.14.55-.06.68.18.14.24.06.55-.18.68zm4.75.07c-.1 0-.2-.03-.27-.08l-8.5-5.5c-.23-.15-.3-.46-.15-.7.15-.22.46-.3.7-.14L12 13.4l8.23-5.32c.23-.15.54-.08.7.15.14.23.07.54-.16.7l-8.5 5.5c-.08.04-.17.07-.27.07zm8.93 1.75c-.1.16-.26.25-.43.25-.08 0-.17-.02-.25-.07l-3.5-2c-.24-.13-.32-.44-.18-.68s.44-.32.68-.18l3.5 2c.24.13.32.44.18.68z"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Sharingbutton LinkedIn -->
+          <a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.chatiment.io&amp;title=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;summary=Backtest%20your%20Trading%20Group%20with%20Chatiment!&amp;source=https%3A%2F%2Fwww.chatiment.io" target="_blank" rel="noopener" aria-label="">
+            <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Sharingbutton Reddit -->
+          <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3A%2F%2Fwww.chatiment.io&amp;resubmit=true&amp;title=Backtest%20your%20Trading%20Group%20with%20Chatiment!" target="_blank" rel="noopener" aria-label="">
+            <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 13.37C1.5 13.07 1 12.35 1 11.5c0-1.1.9-2 2-2 .64 0 1.22.32 1.6.82-1.1.85-1.92 1.9-2.3 3.05zm3.7.13c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9.8 4.8c-1.08.63-2.42.96-3.8.96-1.4 0-2.74-.34-3.8-.95-.24-.13-.32-.44-.2-.68.15-.24.46-.32.7-.18 1.83 1.06 4.76 1.06 6.6 0 .23-.13.53-.05.67.2.14.23.06.54-.18.67zm.2-2.8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5.7-2.13c-.38-1.16-1.2-2.2-2.3-3.05.38-.5.97-.82 1.6-.82 1.1 0 2 .9 2 2 0 .84-.53 1.57-1.3 1.87z"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <br/>
+
+          Comments or Suggestions?  Hit me up at hello.chatiment@gmail.com <br/>
+          © 2019 CHATIMENT
+
+        </div>
+
+
+
+    </div>
+  </footer>
+
+  </body>
+
+
+
+  <script>
+  $(window).ready(()=>{
+    document.getElementById('parser').addEventListener('change', handleParserSelection, false);
+    document.getElementById('upload').addEventListener('change', buildChart, false);
+  })
+  </script>
+
+</html>
