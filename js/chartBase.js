@@ -177,7 +177,7 @@ function normalizeMsgs(_msg_row){
 
 
 function formatWhatsapp(_txt_string) {
-    console.log("whap str:: ", _txt_string)
+    //console.log("whap str:: ", _txt_string)
     const DATE_REGEX = /\d{1,2}\/\d{1,2}\/\d{1,2}, \d{1,2}:\d{1,2} [A-Z]{2}/
     const AUTHOR_REGEX = /(?<=-)(.*)(?=:)/
     const NON_DATE_AUTH = /\d{1,2}\/\d{1,2}\/\d{1,2}, \d{1,2}:\d{1,2} [A-Z]{2} - (.*):/
@@ -204,14 +204,14 @@ function formatWhatsapp(_txt_string) {
                      start: new Date(formatted[1][0]).toISOString(),
                      end: new Date(formatted[formatted.length - 2][0]).toISOString()
                     }
-    console.log("WHATS APP:: ", messages)
+    //console.log("WHATS APP:: ", messages)
     return messages
 }
 
 function formatTelegram(_json_string) {
 
   telegram_obj = JSON.parse(_json_string)
-  console.log("TELE_OBJ", telegram_obj)
+  //console.log("TELE_OBJ", telegram_obj)
   formatted = telegram_obj.chats.list[0].messages.map(data=>[new Date(data.date).getTime(), data.actor || "(Hidden Name)", data.text])
   let messages = {
                    data: formatted,
@@ -230,7 +230,7 @@ function formatCustom(_csv_string){
 function formatKakao(_csv_string) {
   let splitted = _csv_string.split("\n").map(data=>data.split(","))
   let formatted = splitted.map(data => normalizeMsgs(data))
-  console.log("formatted",formatted)
+  //console.log("formatted",formatted)
 
   //window.alert(formatted[formatted.length - 1])
   let messages = {
@@ -248,7 +248,7 @@ function formatKakao(_csv_string) {
 function groupMessagesToPrices(_messages, _price_map){
 
     let price_keys = Object.keys(_price_map).map(data=>parseInt(data)).sort()
-    console.log(price_keys)
+    //console.log(price_keys)
     for (let msg_idx = 0; msg_idx < _messages.length; msg_idx++){
 
       var msg_timestamp = _messages[msg_idx][0]
@@ -308,11 +308,11 @@ function buildAnnotationsFromPriceMap(_price_map){
       }
   */
 
-  console.log("PR_MAP::: ", _price_map)
+  //console.log("PR_MAP::: ", _price_map)
   let keys = Object.keys(_price_map).sort()
 
   let mapped_keys = keys.map((key)=>{
-      console.log()
+      //console.log()
       return {
         draggable: "",
         className: String(`msg-annotation anno_${key}`),
@@ -391,8 +391,8 @@ function drawChart(_state) {
     $("#databar").show()
     $(".data_table").html(state.databar_obj[0])
 
-    console.log("DATABAR", state.databar_obj[1])
-    console.log("FINAL STATE:::", state)
+    //console.log("DATABAR", state.databar_obj[1])
+    //console.log("FINAL STATE:::", state)
     drawPie()
 
 }
@@ -412,14 +412,14 @@ function buildChart(evt) {
           try {
             state.formatted_msgs = PARSERS[state.parser](e.target.result)
           } catch(err) {
-            console.log("Caught error", err)
+            //console.log("Caught error", err)
             window.alert(`Please select a valid ${state.parser} export file`)
             $(".loader_gif").hide()
 
             return
           }
           state.price_endpoint = buildNomicsApiString(state.formatted_msgs.start, state.formatted_msgs.end)
-          state.prices = await fetchData(state.price_endpoint)
+          state.prices = JSON.parse(await fetchData(state.price_endpoint))
           drawChart(state)
         };
     })(f);
