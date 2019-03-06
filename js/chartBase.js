@@ -57,7 +57,8 @@ function normalizePricesForLine(_price_row) {
 function buildNomicsApiString(_starttime, _endtime){
   let starttime = _starttime
   let endtime = _endtime || new Date().toISOString()
-  return `https://api.nomics.com/v1/candles?key=a397325d785295fba75504e8059b5fba&interval=1m&currency=BTC&start=${starttime}&end=${endtime}`
+  //return `https://api.nomics.com/v1/candles?key=a397325d785295fba75504e8059b5fba&interval=1m&currency=BTC&start=${starttime}&end=${endtime}`
+  return `https://api.chatiment.io/quick?curr=BTC&start=${_starttime}&end=${_endtime}`
 }
 
 function grabPrices(_formatted_chat_struct){
