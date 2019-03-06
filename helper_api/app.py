@@ -6,6 +6,7 @@ import urllib
 API_KEY = "a397325d785295fba75504e8059b5fba"
 NOM_ENDPOINT = "https://api.nomics.com/v1/candles?key={key}&interval=1m&currency={currency}&start={starttime}&end={endtime}"
 PORT = 8888
+web.config.debug = False
 
 
 
