@@ -32,6 +32,7 @@ class QuickPrice(object):
         ep = NOM_ENDPOINT.format(key=API_KEY, currency=curr or "BTC", starttime = start, endtime = end )
         print(ep)
         resp = urllib.urlopen(ep)
+        web.header("Access-Control-Allow-Origin", "*")
 
         return resp.read()
 
