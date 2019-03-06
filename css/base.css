@@ -1,9 +1,85 @@
 body {
-  font-family: 'Raleway', sans-serif;
   color: #444444;
   background-color: #AAAAAA;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Questrial', sans-serif;
 
+}
+footer{
+  bottom: 0
+}
+
+#timelineForm {
+  background-color: #DDDDDD;
+  padding: 5%;
+  min-width: 815px
+
+
+}
+
+@media only screen and (max-width: 600px) {
+  #timelineForm {
+    min-width:0;
+  }
+
+  footer {
+    display: none;
+  }
+  .chart_hist_container {
+    margin-top: 10px
+  }
+
+  .hist_sectional {
+    padding-left: 0 !important
+  }
+} /* MEDIA END */
+
+.hist_sectional {
+  padding-left: 10px;
+  padding-right: 0px
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #AAAAAA;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #DDDDDD;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #DDDDDD;
+}
+
+.chat-inputter{
+  padding-top: 10px;
+  height: 50%;
+  overflow:scroll;
+  background: #EEEEEE;
+
+}
+
+.manual-button {
+  margin-left: 10px
+}
+
+.hidden {
+  display: none
+}
+
+.custom-msg-input {
+  margin-left: 5px;
+}
+
+.msg-custom-form {
+  margin-bottom: 5px;
 }
 
 .linkbar_link {
@@ -140,6 +216,7 @@ body {
 }
 
 .footer {
+  position: relative;
   bottom: 0;
   padding: 25px;
   padding-top: 60px;

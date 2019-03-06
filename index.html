@@ -1,5 +1,6 @@
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Chatiment</title>
   <!-- You can use Open Graph tags to customize link previews.
@@ -10,10 +11,9 @@
     <meta property="og:description"   content="Your description" />
     <meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
 
+
     <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous">
+      src="js/jquery.min.js">
     </script>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -24,17 +24,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
     </script>
 
+    <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+
 <!--
     <script src="https://code.highcharts.com/highcharts.js">
     </script>
 -->
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="js/highstock.js"></script>
 
 
-    <script src="https://code.highcharts.com/modules/annotations.js">
+    <script src="js/annotations.js">
     </script>
 
     <link rel= "stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
 
     <script src="js/chartBase.js"></script>
     <script src="js/chart_config.js"></script>
@@ -44,6 +49,12 @@
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="js/lity/lity.min.css">
+
+    <script src='js/timepicker.js'></script>
+    <link rel="stylesheet" href="css/timepicker.css">
+
+    <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
 
   </head>
@@ -71,14 +82,21 @@
      <div class="row">
        <div class = "col-sm-4 selector">
          <h6>1. Select Client Type</h6>
-         <select id="parser">
-           <option selected disabled> Select Client</option>
-           <option value="telegram"> Telegram </option>
-           <option value="whatsapp"> WhatsApp </option>
-           <option value="kakao"> Kakao </option>
+         <select id="parser" class="client-selector">
+           <option  selected disabled> Select Client</option>
+           <option value="custom"> Custom </option>
+           <option value="whatsapp"> WhatsApp (.txt) </option>
+           <option value="kakao"> Kakao (.csv) </option>
+           <option value="telegram"> Telegram (.json)</option>
            <option value="discord" disabled> Discord </option>
            <option value="slack" disabled> Slack </option>
          </select>
+
+         <a href="#timelineForm" data-lity>
+           <button class="btn btn-info hidden manual-button">
+              Manual Entry
+           </button>
+         </a>
        </div>
 
        <div class="col-sm-4 selector">
@@ -145,10 +163,21 @@
             <img src="img/charty.png" style="height: 150px;">
             <p>Upload an Export file from Telegram/Kakao/WhatsApp/etc. to begin</p>
           </div>
-          <div  id="annotated_chart">
+
+          <div  id="annotated_chart"> <!-- HICHARTS REPLACEMENT ID TARGET -->
           </div>
+
+        <div id="databar" style="display:none"> <!-- DATA BAR -->
+          <div class="data_table"></div>
         </div>
-        <div class = "col-md-3" >
+
+        </div>
+
+
+
+
+
+        <div class = "col-md-3 hist_sectional" >
           <div class = "sent_sec">
             <div class="text-header">
                <h6> <i class="fa fa-book"></i> CHAT HISTORY </h6>
@@ -234,5 +263,69 @@
     document.getElementById('upload').addEventListener('change', buildChart, false);
   })
   </script>
+
+
+<!-- Hidden Content -->
+
+<div id="timelineForm" class="lity-hide">
+  <h1>
+    Chat Import
+    <div class="btn btn-info" onClick="addForm()">
+      + Add Message
+    </div>
+ </h1>
+
+  <div id="chatAdd">
+    <form>
+      <div class="chat-inputter">
+
+      </div>
+
+      <div class = "btn btn-success" onClick="CSVProcess()">Create CSV</div>
+      <div id="download-link"></div>
+    </form>
+  </div>
+
+  <script>
+    var cur_forms = []
+
+      $('#parser').change(function(){
+        if ($('#parser').val() === 'custom') {
+          $('.manual-button').show()
+        }
+      })
+
+
+    function addForm(){
+      let formName = `custom-${cur_forms.length}`
+
+      const formContents = `
+              <form class="row msg-custom-form ${formName}">
+                  <div class="col-sm-1">${cur_forms.length + 1}.</div>
+                  <input name="datetime" class="col-sm-3 datepicker  ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all custom-msg-input" placeholder="Datetime">
+                  <input name="sender" class="col-sm-3 custom-msg-input" type="text" placeholder="Sender">
+                  <input name="message" class="col-sm-4 custom-msg-input" type="text" placeholder="Message">
+              </form>`
+
+      cur_forms.push(`.${formName}`)
+      $(".chat-inputter").append(formContents)
+      $('.datepicker').datetimepicker()
+
+    }
+
+    function CSVProcess(){
+        let current_entries = cur_forms.map(fname => $(fname).serializeArray())
+        let processed = "date, sender, message\n" + current_entries.map(data => `${data[0].value || ""}, ${data[1].value || ""}, ${data[2].value || ""}`).join("\n")
+
+        uri = `data:text/csv;charset=UTF-8,${processed}`
+        window.open(encodeURI(uri))
+
+
+    }
+  </script>
+
+</div>
+
+
 
 </html>

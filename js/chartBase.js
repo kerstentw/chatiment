@@ -20,7 +20,8 @@ var state = {
 var PARSERS = {
     telegram: formatTelegram,
     kakao: formatKakao,
-    whatsapp: formatWhatsapp
+    whatsapp: formatWhatsapp,
+    custom: formatCustom
 }
 
 // Helpers
@@ -56,7 +57,7 @@ function normalizePricesForLine(_price_row) {
 function buildNomicsApiString(_starttime, _endtime){
   let starttime = _starttime
   let endtime = _endtime || new Date().toISOString()
-  return `https://api.nomics.com/v1/candles?key=a397325d785295fba75504e8059b5fba&interval=12h&currency=BTC&start=${starttime}&end=${endtime}`
+  return `https://api.nomics.com/v1/candles?key=a397325d785295fba75504e8059b5fba&interval=1m&currency=BTC&start=${starttime}&end=${endtime}`
 }
 
 function grabPrices(_formatted_chat_struct){
@@ -64,6 +65,94 @@ function grabPrices(_formatted_chat_struct){
   buildNomicsApiString()
 }
 
+
+function calculateUserCounts() {
+    let user_counts = new Object()
+    let highest = [0,""]
+
+    for (let i = 0; i < state.formatted_msgs.data.length; i++) {
+      let sample = state.formatted_msgs.data[i]
+      if (sample[0] && sample[1] && sample[2]) {
+        user_counts[sample[1]]? user_counts[sample[1]] += 1 : user_counts[sample[1]] = 1
+      }
+    }
+
+    let keys = Object.keys(user_counts)
+
+    for (let i = 0; i < keys.length; i++) {
+      let cur_key = keys[i]
+      highest = user_counts[cur_key] > highest[0]? [user_counts[cur_key],cur_key] : highest
+    }
+
+    return [user_counts, highest]
+
+}
+
+function genDataBarHTML(_databar_obj){
+  let generated = `
+    <h5>SUMMARY</h5>
+    <div class ="row">
+    <table class="table col-md-6" style="font-size: 13px;">
+      <tr>
+        <th>
+          Number of Messages
+        </th>
+        <td>
+          ${_databar_obj.number_of_messages}
+        </td>
+      <tr>
+
+      <tr>
+        <th>
+          First Message
+        </th>
+        <td>
+        ${_databar_obj.first_message}
+        </td>
+      <tr>
+
+      <tr>
+        <th>
+          Last Message
+        </th>
+        <td>
+        ${_databar_obj.last_message}
+        </td>
+      <tr>
+
+      <tr>
+        <th>
+          Most Talkative
+        </th>
+        <td>
+          ${_databar_obj.prolific_user[1]}
+        </td>
+      <tr>
+    </table>
+    <div class="col-md-6">
+      <a href="#user-pie" class="btn btn-info" style="margin-top: 50px" data-lity> Sentiment Breakdown </a>
+    </div>
+    </div>
+    <div class= "lity-hide" id="user-pie"></div>
+  `
+
+  return generated
+
+}
+
+function generateDataBar(){
+    user_info = calculateUserCounts()
+    let data_store = {
+          number_of_messages: state.formatted_msgs.data.length,
+          first_message: state.formatted_msgs.start,
+          last_message : state.formatted_msgs.end,
+          user_counts : user_info[0],
+          prolific_user: user_info[1]
+
+    }
+
+    return [genDataBarHTML(data_store),data_store]
+}
 
 function buildPricingMap(_pricing_struct) {
     let pricingMap = new Object()
@@ -118,11 +207,24 @@ function formatWhatsapp(_txt_string) {
     return messages
 }
 
-function formatTelegram(_csv_string) {
-  throw "NOT READY"
-  return _csv_string.split("\n")
+function formatTelegram(_json_string) {
+
+  telegram_obj = JSON.parse(_json_string)
+  console.log("TELE_OBJ", telegram_obj)
+  formatted = telegram_obj.chats.list[0].messages.map(data=>[new Date(data.date).getTime(), data.actor || "(Hidden Name)", data.text])
+  let messages = {
+                   data: formatted,
+                   start: new Date(formatted[1][0]).toISOString(),
+                   end: new Date(formatted[formatted.length - 2][0]).toISOString()
+                  }
+
+  return messages
 }
 
+
+function formatCustom(_csv_string){
+  return formatKakao(_csv_string)
+}
 
 function formatKakao(_csv_string) {
   let splitted = _csv_string.split("\n").map(data=>data.split(","))
@@ -229,6 +331,48 @@ function buildAnnotationsFromPriceMap(_price_map){
 // Chart Logic & State Managers
 // TODO: Refactor this into something more comprehensible
 
+function drawPie(){
+
+  let sample = ""
+  Highcharts.chart('user-pie', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: `MESSAGE DISTRIBUTIONS`
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'USERS',
+        colorByPoint: true,
+        data: Object.keys(state.databar_obj[1].user_counts).map((key) => {
+          return {
+          y: state.databar_obj[1].user_counts[key],
+          name: key
+        }
+
+         })
+    }]
+});
+}
 
 function drawChart(_state) {
     let prices = state.prices.map(data=>normalizePricesForLine(data))
@@ -241,6 +385,14 @@ function drawChart(_state) {
     Highcharts.stockChart('annotated_chart', CHART_CONFIG)
     $(".loader_gif").hide()
     $(".placeholder_chart").hide()
+
+    state.databar_obj = generateDataBar()
+    $("#databar").show()
+    $(".data_table").html(state.databar_obj[0])
+
+    console.log("DATABAR", state.databar_obj[1])
+    console.log("FINAL STATE:::", state)
+    drawPie()
 
 }
 
