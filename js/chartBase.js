@@ -287,7 +287,7 @@ function grabChats(_key){
         </div>
         `
   })
-
+  $("temp_hist").hide()
   $(".chat_hist").html(chat_html.join("<br/>"))
 }
 

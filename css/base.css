@@ -33,6 +33,14 @@ footer{
   }
 } /* MEDIA END */
 
+
+
+.temp_hist {
+  text-align: center;
+  opacity: 0.4;
+  padding-top: 40%
+}
+
 .hist_sectional {
   padding-left: 10px;
   padding-right: 0px
